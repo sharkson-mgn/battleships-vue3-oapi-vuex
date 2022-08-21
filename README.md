@@ -10,6 +10,7 @@ Hello! I am glad to present You my BattleShips game written using technologies s
   - [ ] Button to start game
   - [ ] Smart store of ship positions
     - [ ] (optional) save&load feature
+ 
 ...and other...
 
 
