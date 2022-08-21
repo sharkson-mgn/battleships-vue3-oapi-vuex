@@ -1,4 +1,4 @@
-# statki
+# battleships
 
 ## Project setup
 ```
