@@ -1,6 +1,6 @@
 <template>
-  <div class="row">
-    <div class="col">
+  <div class="row justify-content-cente">
+    <div class="col-4">
       <h4 class="text-center">New game:</h4>
       <ul>
         <DifficultButton

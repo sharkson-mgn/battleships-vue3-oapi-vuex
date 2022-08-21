@@ -78,10 +78,7 @@ export default {
             if ($(el).hasClass('shipped') && !$(el).hasClass('shipped-'+$(ui.draggable).attr('ship'))) {
               colision = true;
             }
-
-            if (cy+y == cy && from <= x && x < to) {
-              continue;
-            }
+            
 
             $(el).addClass('sea-field-margin');
 

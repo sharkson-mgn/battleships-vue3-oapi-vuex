@@ -9,8 +9,8 @@
             <div class="col text-center">
               <h1>BattleShips</h1>
               <div v-if="this.difficultList.includes(this.difficult)" class="mb-2">
-              <span>Trudność: {{ difficult }}</span><br />
-              <button class="btn btn-secondary btn-sm" @click="cancelGame">Anulu grę</button>
+              <span>Difficult: {{ difficult }}</span><br />
+              <button class="btn btn-secondary btn-sm" @click="cancelGame">Cancel game</button>
             </div>
             </div>
           </div>
