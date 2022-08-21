@@ -4,14 +4,19 @@ Hello! I am glad to present You my BattleShips game written using technologies s
 
 # Todo
 - [x] Menu to select difficulty
+  - [ ] Three level for difficulty ai
 - [x] Battlefield config area
   - [x] Drag&drop ship system
   - [ ] Button to set random positions
   - [ ] Button to start game
   - [ ] Smart store of ship positions
-    - [ ] (optional) save&load feature
+    - [ ] (optional) save&load position feature
+- [ ] save&restore battle (eg. possibility for continuation later)
+- [ ] Resposive layout (perfect look both on desktop and mobile!)
  
-...and other...
+...and other... I invent!
+
+Thanks and best regards for [Zaprogramuj Życie (DC Serv)](https://discord.gg/ejHpMwxnnJ) community!
 
 
 # Using
