@@ -18,6 +18,16 @@ Hello! I am glad to present You my BattleShips game written using technologies s
     - [ ] (optional) save&load position feature
 - [ ] save&restore battle (eg. possibility for continuation later)
 - [ ] Resposive layout (perfect look both on desktop and mobile!)
+- [ ] Online battles!
+  - [ ] Backend
+    - [ ] User registration
+    - [ ] User login possibility
+    - [ ] Inviting to friends possibility
+    - [ ] Sending request to playing together
+  - [ ] Frontend
+    - [ ] Register Form
+    - [ ] Login form
+    - [ ] User Panel
 
 ...and other... I invent!
 
