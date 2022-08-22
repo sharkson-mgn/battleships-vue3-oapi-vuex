@@ -7,7 +7,8 @@ export default createStore({
     battleField: {
       player: null,
       bot: null,
-    }
+    },
+    allShips: false,
   },
   getters: {
     shipList() {

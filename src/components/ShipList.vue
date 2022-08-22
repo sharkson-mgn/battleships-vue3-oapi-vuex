@@ -1,7 +1,18 @@
 <template>
   <div class="container border rounded">
     <div class="row d-flex shipbox">
-      <div v-for="(ship,index) in this.shipList" :key="index" class="shipsel m-1" :class="'long-' + ship.long + ' ship-' + index" :ship="index" :long="ship.long">&nbsp;</div>
+      <div class="col">
+      <div v-for="(ship,index) in this.shipList" :key="index" class="d-inline-flex shipsel m-1" :class="'long-' + ship.long + ' ship-' + index" :ship="index" :long="ship.long">&nbsp;</div>
+      </div>
+    </div>
+    <div class="row justify-content-between">
+      <div class="col-auto align-self-start">
+        <button class="btn btn-sm btn-secondary my-1" @click="addRotate">Rotate</button>
+      </div>
+      <div class="col-auto align-self-end">
+        <button class="btn btn-sm btn-secondary my-1 mx-1" @click="resetPos">Reset</button>
+        <button class="btn btn-sm btn-secondary my-1" @click="randomPos">Random</button>
+      </div>
     </div>
   </div>
 </template>
@@ -15,6 +26,68 @@ export default {
     shipList: () => store.getters.shipList,
   },
   methods: {
+    addRotate() {
+      if ($('.shipsel').hasClass('rotated')) {
+        $('.shipsel').each(function(){
+          $(this).stop(true,false).animate({
+            width: ($('.field').eq(0).innerWidth()*parseInt($(this).attr('long'))) + 'px',
+            height: ($('.field').eq(0).innerHeight()) + 'px',
+          });
+        })
+      } else {
+        $('.shipsel').each(function(){
+          $(this).stop(true,false).animate({
+            width: ($('.field').eq(0).innerWidth()) + 'px',
+            height: ($('.field').eq(0).innerHeight()*parseInt($(this).attr('long'))) + 'px',
+          });
+        })
+      }
+      $('.shipsel').toggleClass('rotated');
+    },
+    randomPos() {
+      $(".sea .field").addClass('empty-field').removeClass('shipped rotated').removeClass (function (index, className) {
+          return (className.match (/shipped-\d+/g) || []).join(' ');
+      }).removeAttr('long ship');
+      $('.shipsel').css('visibility','hidden');
+      $('.shipsel').each(function() {
+        let colision = false, cy, cx, vert;
+        let long = parseInt($(this).attr('long'));
+        let move = Math.floor(long / 3);
+        let from = move*-1, to = long-move;
+        let ship = $(this).attr('ship');
+        do {
+          colision = false;
+          cy = Math.floor(Math.random() * (10 - 1)) + 1;
+          cx = Math.floor(Math.random() * (10 - 1)) + 1;
+          vert = Math.random() < 0.5;
+
+          for (let y = (vert ? from : 0) + -1; y <= (vert ? to : 1); y++) {
+            for (let x = (vert ? 0 : from) + -1; x <= (vert ? 1 : to); x++) {
+
+
+              let el = $('.field-' + (cx+x) + '-' + (cy+y));
+
+              if ((cy + y < 0 || cy + y > 11 || cx + x < 0 || cx + x > 11) || ($(el).hasClass('shipped') && !$(el).hasClass('shipped-'+$(this).attr('ship')))) {
+                colision = true;
+                continue;
+              }
+
+            }
+          }
+        } while (colision);
+
+        for (let i = from; i < to; i++) {
+          let el = $('.field-' + (cx+(vert ? 0 : i)) + '-' + (cy+(vert ? i : 0)));
+          $(el).addClass('shipped shipped-'+ship+(vert ? ' rotated' : '')).removeClass('empty-field').attr('ship',ship).attr('long',long);
+        }
+      });
+    },
+    resetPos() {
+      $(".sea .field").addClass('empty-field').removeClass('shipped rotated').removeClass (function (index, className) {
+          return (className.match (/shipped-\d+/g) || []).join(' ');
+      }).removeAttr('long ship');
+      $('.shipsel').css('visibility','visible');
+    }
   },
   mounted() {
     $('.shipsel').draggable({
@@ -30,6 +103,7 @@ export default {
     $('.shipbox').droppable({
       accept: '.field',
       drop: function(event,ui) {
+        $('.colision').removeClass('.colision');
         let ship = $(ui.helper).attr('ship');
         $('.shipsel.ship-'+ship).css('visibility','visible');
         $('.shipped.shipped-'+ship).removeClass('shipped shipped-'+ship).addClass('empty-field').removeAttr('long ship');
@@ -45,9 +119,17 @@ export default {
       },
       helper: function(ui){
         let long = $(ui.target).attr('long');
-        return $('<div class="shipsel m-1 shipsel-helper" long="'+long+'">&nbsp;</div>').css({
-          width: ($('.field').eq(0).innerWidth()*parseInt(long)) + 'px'
-        }).attr('ship',$(ui.target).attr('ship'));
+        let vert = $(ui.target).hasClass('rotated');
+        let opts = {};
+        if (vert) {
+          opts.height = ($('.field').eq(0).innerHeight()*parseInt(long)) + 'px';
+          opts.width = ($('.field').eq(0).innerWidth()) + 'px';
+        }
+        else
+        {
+          opts.width = ($('.field').eq(0).innerWidth()*parseInt(long)) + 'px'
+        }
+        return $('<div class="shipsel m-1 shipsel-helper'+(vert ? ' rotated' : '')+'" long="'+long+'">&nbsp;</div>').css(opts).attr('ship',$(ui.target).attr('ship'));
       },
       cancel: '.empty-field',
     });
@@ -66,21 +148,24 @@ export default {
 
         let colision = false;
         //detect colision and draw margin
-        for (let y = -1; y <= 1; y++) {
-          for (let x = from - 1; x < to + 1; x++) {
+        let vert = $(ui.draggable).hasClass('rotated');
+        for (let y = (vert ? from : 0) + -1; y <= (vert ? to : 1); y++) {
+          for (let x = (vert ? 0 : from) + -1; x <= (vert ? 1 : to); x++) {
 
-            if (cy+y < 0 || cy+y > 11 || cx + x < 0 || cx + x > 11) {
+            if (cy + y < 0 || cy + y > 11 || cx + x < 0 || cx + x > 11) {
               colision = true;
             }
 
             let el = $('.field-' + (cx+x) + '-' + (cy+y));
 
+            let classToAdd = 'sea-field-margin';
+
             if ($(el).hasClass('shipped') && !$(el).hasClass('shipped-'+$(ui.draggable).attr('ship'))) {
               colision = true;
+              classToAdd = 'sea-field-warring';
             }
-            
 
-            $(el).addClass('sea-field-margin');
+            $(el).addClass(classToAdd);
 
           }
         }
@@ -97,7 +182,7 @@ export default {
 
 
         for (let i = from; i < to; i++) {
-          let el = $('.field-' + (cx+i) + '-' + cy);
+          let el = $('.field-' + (cx+(vert ? 0 : i)) + '-' + (cy+(vert ? i : 0)));
           if (!$(el).hasClass('shipped')) {
             $(el).addClass(className);
           }
@@ -129,11 +214,13 @@ export default {
           $('.shipped.shipped-'+ship).removeClass('shipped shipped-'+ship).addClass('empty-field').removeAttr('long ship');
         }
 
+        let vert = $(ui.helper).hasClass('rotated');
+
         ship = $(ui.helper).attr('ship');
 
         for (let i = from; i < to; i++) {
-          let el = $('.field-' + (cx+i) + '-' + cy);
-          $(el).addClass('shipped shipped-'+ship).removeClass('empty-field').attr('ship',ship).attr('long',long);
+          let el = $('.field-' + (cx+(vert ? 0 : i)) + '-' + (cy+(vert ? i : 0)));
+          $(el).addClass('shipped shipped-'+ship+(vert ? ' rotated' : '')).removeClass('empty-field').attr('ship',ship).attr('long',long);
         }
       }
     });
@@ -177,6 +264,4 @@ export default {
 .shipbox-hover {
   border-color: yellow;
 }
-
-
 </style>

@@ -11,6 +11,7 @@
               <div v-if="this.difficultList.includes(this.difficult)" class="mb-2">
               <span>Difficult: {{ difficult }}</span><br />
               <button class="btn btn-secondary btn-sm" @click="cancelGame">Cancel game</button>
+              <button v-if="this.allShips" class="btn btn-secondary btn-sm" @click="startGame">Start Game</button>
             </div>
             </div>
           </div>
@@ -47,6 +48,7 @@ export default {
   computed: {
     difficult: () => store.state.difficult,
     difficultList: () => store.state.difficultList,
+    allShips: () => store.state.allShips,
   },
   methods: {
     difficultSelected() { return this.difficultList.includes(this.difficult); },
