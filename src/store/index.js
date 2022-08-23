@@ -8,7 +8,8 @@ export default createStore({
       player: null,
       bot: null,
     },
-    allShips: false,
+    savedPos: null,
+    ships: 0,
   },
   getters: {
     shipList() {
@@ -26,7 +27,6 @@ export default createStore({
   mutations: {
   },
   actions: {
-
   },
   modules: {
   }

@@ -1,5 +1,6 @@
 <template>
-      <div class="sea mb-3">
+      <center v-if="this.player"><h2>{{ this.player }}</h2></center>
+      <div class="sea mb-3" :class="this.player">
         <div class="field-row" v-for="y in 10" :key="y">
           <div class="square field empty-field" v-for="x in 10" :key="x" :x="x" :y="y" :class="'field-' + x + '-' + y">&nbsp;</div>
         </div>
@@ -9,7 +10,11 @@
 
 <script>
 export default {
-  props: ['score']
+  props: ['player'],
+  created() {
+
+    console.log(this.player);
+  }
 }
 </script>
 

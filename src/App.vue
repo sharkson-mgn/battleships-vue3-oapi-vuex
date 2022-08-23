@@ -9,24 +9,31 @@
             <div class="col text-center">
               <h1>BattleShips</h1>
               <div v-if="this.difficultList.includes(this.difficult)" class="mb-2">
-              <span>Difficult: {{ difficult }}</span><br />
-              <button class="btn btn-secondary btn-sm" @click="cancelGame">Cancel game</button>
-              <button v-if="this.allShips" class="btn btn-secondary btn-sm" @click="startGame">Start Game</button>
-            </div>
+                <span>Difficult: {{ difficult }}</span><br />
+                <button class="btn btn-secondary btn-sm my-1" @click="cancelGame">Cancel game</button><br />
+                <button v-if="!this.duringGame()" :disabled="!this.allShips" class="btn btn-secondary btn-sm" @click="startGame">Start Game</button>
+              </div>
             </div>
           </div>
 
           <DifficultMenu
-            v-if="!this.difficultSelected()" />
+            v-if="!this.difficultSelected() && !this.duringGame()" />
 
-
-
-          <div class="row" id="gameConfigArea" v-if="this.difficultSelected()">
+          <div class="row" id="gameConfigArea" v-if="this.difficultSelected() && !this.duringGame()">
             <div class="col-6">
               <GameBoard />
             </div>
             <div class="col-6">
               <ShipList/>
+            </div>
+          </div>
+
+          <div class="row" id="game" v-if="this.difficultSelected() && this.duringGame()">
+            <div class="col-6">
+              <GameBoard player="player" />
+            </div>
+            <div class="col-6">
+              <GameBoard player="cpu" />
             </div>
           </div>
 
@@ -39,21 +46,33 @@
 
 <script>
 
+//import $ from "jquery";
 import store from './store'
 import DifficultMenu from './components/DifficultMenu.vue'
 import GameBoard from './components/GameBoard.vue'
 import ShipList from './components/ShipList.vue'
+import bs from './battleships'
 export default {
   inject: ['name'],
   computed: {
     difficult: () => store.state.difficult,
     difficultList: () => store.state.difficultList,
-    allShips: () => store.state.allShips,
+    allShips: () => { return store.state.ships == 20; },
   },
   methods: {
-    difficultSelected() { return this.difficultList.includes(this.difficult); },
+    duringGame() { return store.state.savedPos !== null && typeof store.state.savedPos.player == 'object' && typeof store.state.savedPos.cpu == 'object'; },
+    difficultSelected() { return this.difficultList.includes(this.difficult) },
     cancelGame() {
       store.state.difficult = null;
+      store.state.savedPos = null;
+      store.state.ships = 0;
+    },
+    startGame() {
+      store.state.savedPos = {};
+      store.state.savedPos.player = bs.getPos();
+      bs.randomPos();
+      store.state.savedPos.cpu = bs.getPos();
+      bs.loadPos(store.state.savedPos.player);
     }
   },
   components: {

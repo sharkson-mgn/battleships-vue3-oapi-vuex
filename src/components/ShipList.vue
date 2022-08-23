@@ -21,75 +21,18 @@
 import $ from "jquery";
 import 'jqueryui';
 import store from '../store'
+import bs from '../battleships'
 export default {
   computed: {
-    shipList: () => store.getters.shipList,
+    shipList: () => store.getters.shipList
   },
   methods: {
-    addRotate() {
-      if ($('.shipsel').hasClass('rotated')) {
-        $('.shipsel').each(function(){
-          $(this).stop(true,false).animate({
-            width: ($('.field').eq(0).innerWidth()*parseInt($(this).attr('long'))) + 'px',
-            height: ($('.field').eq(0).innerHeight()) + 'px',
-          });
-        })
-      } else {
-        $('.shipsel').each(function(){
-          $(this).stop(true,false).animate({
-            width: ($('.field').eq(0).innerWidth()) + 'px',
-            height: ($('.field').eq(0).innerHeight()*parseInt($(this).attr('long'))) + 'px',
-          });
-        })
-      }
-      $('.shipsel').toggleClass('rotated');
-    },
-    randomPos() {
-      $(".sea .field").addClass('empty-field').removeClass('shipped rotated').removeClass (function (index, className) {
-          return (className.match (/shipped-\d+/g) || []).join(' ');
-      }).removeAttr('long ship');
-      $('.shipsel').css('visibility','hidden');
-      $('.shipsel').each(function() {
-        let colision = false, cy, cx, vert;
-        let long = parseInt($(this).attr('long'));
-        let move = Math.floor(long / 3);
-        let from = move*-1, to = long-move;
-        let ship = $(this).attr('ship');
-        do {
-          colision = false;
-          cy = Math.floor(Math.random() * (10 - 1)) + 1;
-          cx = Math.floor(Math.random() * (10 - 1)) + 1;
-          vert = Math.random() < 0.5;
-
-          for (let y = (vert ? from : 0) + -1; y <= (vert ? to : 1); y++) {
-            for (let x = (vert ? 0 : from) + -1; x <= (vert ? 1 : to); x++) {
-
-
-              let el = $('.field-' + (cx+x) + '-' + (cy+y));
-
-              if ((cy + y < 0 || cy + y > 11 || cx + x < 0 || cx + x > 11) || ($(el).hasClass('shipped') && !$(el).hasClass('shipped-'+$(this).attr('ship')))) {
-                colision = true;
-                continue;
-              }
-
-            }
-          }
-        } while (colision);
-
-        for (let i = from; i < to; i++) {
-          let el = $('.field-' + (cx+(vert ? 0 : i)) + '-' + (cy+(vert ? i : 0)));
-          $(el).addClass('shipped shipped-'+ship+(vert ? ' rotated' : '')).removeClass('empty-field').attr('ship',ship).attr('long',long);
-        }
-      });
-    },
-    resetPos() {
-      $(".sea .field").addClass('empty-field').removeClass('shipped rotated').removeClass (function (index, className) {
-          return (className.match (/shipped-\d+/g) || []).join(' ');
-      }).removeAttr('long ship');
-      $('.shipsel').css('visibility','visible');
-    }
+    randomPos: () => bs.randomPos(),
+    resetPos: () => bs.resetPos(),
+    addRotate: () => bs.addRotate(),
   },
   mounted() {
+
     $('.shipsel').draggable({
       revert: true,
     }).css({
@@ -107,6 +50,7 @@ export default {
         let ship = $(ui.helper).attr('ship');
         $('.shipsel.ship-'+ship).css('visibility','visible');
         $('.shipped.shipped-'+ship).removeClass('shipped shipped-'+ship).addClass('empty-field').removeAttr('long ship');
+        store.state.ships = $(".sea .field.shipped").length;
       },
       over: function() {
         $('.shipbox').parent().css('border-color','yellow');
@@ -222,6 +166,7 @@ export default {
           let el = $('.field-' + (cx+(vert ? 0 : i)) + '-' + (cy+(vert ? i : 0)));
           $(el).addClass('shipped shipped-'+ship+(vert ? ' rotated' : '')).removeClass('empty-field').attr('ship',ship).attr('long',long);
         }
+        store.state.ships = $(".sea .field.shipped").length;
       }
     });
   }
@@ -230,7 +175,7 @@ export default {
 
 <style>
 
-.shipsel, .shipped {
+.shipsel {
   border: 1px grey solid;
   border-radius: 0.2em;
   cursor: move;
@@ -238,8 +183,10 @@ export default {
 }
 
 .shipped {
+  background-color: #ddd;
+  border: 1px grey solid;
   border-radius: 0.2em;
-  cursor: pointer;
+  cursor: move;
   display: inline-block;
   width: 10%;
   height: 10%;
