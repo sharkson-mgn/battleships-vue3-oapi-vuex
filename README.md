@@ -13,9 +13,9 @@ Hello! I am glad to present You my BattleShips game written using technologies s
   - [x] Drag&drop ship system
   - [x] Button to set random positions
   - [x] Button to set reset positions
-  - [ ] Button to start game
-  - [ ] Smart store of ship positions
-    - [ ] (optional) save&load position feature
+  - [x] Button to start game
+  - [x] Smart store of ship positions
+    - [x] (optional) save&load position feature
 - [ ] save&restore battle (eg. possibility for continuation later)
 - [ ] Resposive layout (perfect look both on desktop and mobile!)
 - [ ] Online battles!
