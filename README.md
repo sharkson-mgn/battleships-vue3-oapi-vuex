@@ -1,6 +1,12 @@
 # <img src="https://raw.githubusercontent.com/FortAwesome/Font-Awesome/6.x/svgs/solid/ship.svg" width="50" height="50"> BattleShips Game | Vue3 | Vuex | OptionsAPI
 
 
+(Video preview from 23.08.2022)
+
+[![Video Preview](https://img.youtube.com/vi/8nA4GZM-BUo/0.jpg)](https://www.youtube.com/watch?v=8nA4GZM-BUo)
+
+
+
 
 Attention! This project is still being developed.
 
@@ -16,9 +22,10 @@ Hello! I am glad to present You my BattleShips game written using technologies s
   - [x] Button to start game
   - [x] Smart store of ship positions
     - [x] (optional) save&load position feature
-- [ ] save&restore battle (eg. possibility for continuation later)
 - [ ] Resposive layout (perfect look both on desktop and mobile!)
-- [ ] Online battles!
+- [ ] Single Mode
+  - [ ] save&restore battle (eg. possibility for continuation later)
+- [ ] Online Battles!
   - [ ] Backend
     - [ ] User registration
     - [ ] User login possibility
