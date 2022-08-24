@@ -2,7 +2,7 @@ import { createStore } from 'vuex'
 
 export default createStore({
   state: {
-    difficult: 'easy',
+    difficult: null,
     difficultList: ['easy','medium','hard'],
     battleField: {
       player: null,
