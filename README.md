@@ -23,7 +23,7 @@ Hello! I am glad to present You my BattleShips game written using technologies s
   - [x] Smart store of ship positions
     - [x] (optional) save&load position feature
 - [ ] Resposive layout (perfect look both on desktop and mobile!)
-- [ ] Single Mode
+- [x] Single Mode
   - [ ] save&restore battle (eg. possibility for continuation later)
 - [ ] Online Battles!
   - [ ] Backend
@@ -35,6 +35,11 @@ Hello! I am glad to present You my BattleShips game written using technologies s
     - [ ] Register Form
     - [ ] Login form
     - [ ] User Panel
+- [ ] Refactoring code
+  - [ ] SOLID
+  - [ ] DRY
+  - [ ] KISS
+
 
 ...and other... I invent!
 
