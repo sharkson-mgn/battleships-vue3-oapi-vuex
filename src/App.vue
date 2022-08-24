@@ -1,7 +1,7 @@
 <template>
   <div class="container-flow mt-3">
     <div class="row justify-content-center">
-      <div class="col-5 border rounded">
+      <div class="col-10 col-sm-6 col-md-8 col-lg-6 col-xl-5 border rounded">
 
         <div class="container-flow">
 
@@ -20,22 +20,15 @@
             v-if="!this.difficultSelected() && !this.duringGame()" />
 
           <div class="row" id="gameConfigArea" v-if="this.difficultSelected() && !this.duringGame()">
-            <div class="col-6">
+            <div class="col-12 col-md-6">
               <GameBoard />
             </div>
-            <div class="col-6">
+            <div class="col-12 col-md-6">
               <ShipList/>
             </div>
           </div>
 
-          <div class="row" id="game" v-if="this.difficultSelected() && this.duringGame()">
-            <div class="col-6">
-              <GameBoard player="player" />
-            </div>
-            <div class="col-6">
-              <GameBoard player="cpu" />
-            </div>
-          </div>
+          <DuringGame v-if="this.difficultSelected() && this.duringGame()" />
 
         </div>
 
@@ -50,6 +43,7 @@
 import store from './store'
 import DifficultMenu from './components/DifficultMenu.vue'
 import GameBoard from './components/GameBoard.vue'
+import DuringGame from './components/DuringGame.vue'
 import ShipList from './components/ShipList.vue'
 import bs from './battleships'
 export default {
@@ -65,6 +59,7 @@ export default {
     cancelGame() {
       store.state.difficult = null;
       store.state.savedPos = null;
+      store.state.currentPlayer = null;
       store.state.ships = 0;
     },
     startGame() {
@@ -72,13 +67,15 @@ export default {
       store.state.savedPos.player = bs.getPos();
       bs.randomPos();
       store.state.savedPos.cpu = bs.getPos();
-      bs.loadPos(store.state.savedPos.player);
+      store.state.currentPlayer = Math.random() < 0.5 ? 'player' : 'cpu';
+      //bs.loadPos('.sea',store.state.savedPos.player);
     }
   },
   components: {
     DifficultMenu,
     GameBoard,
     ShipList,
+    DuringGame,
   }
 }
 </script>

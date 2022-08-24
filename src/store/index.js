@@ -10,6 +10,8 @@ export default createStore({
     },
     savedPos: null,
     ships: 0,
+    currentPlayer: null,
+    combo: 0,
   },
   getters: {
     shipList() {
