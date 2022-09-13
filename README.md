@@ -6,7 +6,10 @@
 [![Video Preview](https://img.youtube.com/vi/8nA4GZM-BUo/0.jpg)](https://www.youtube.com/watch?v=8nA4GZM-BUo)
 
 
-[DEMO AVAILABLE](https://demo.sharkson.eu/battleshopsgame/)
+[DEMO AVAILABLE](https://demo.sharkson.eu/battleshipsgame/)
+
+[DEMO OF NEW VERSION](https://demo.sharkson.eu/battleshipsgame2/)
+(in progress, using pinia and composition api)
 
 Attention! This project is still being developed.
 
