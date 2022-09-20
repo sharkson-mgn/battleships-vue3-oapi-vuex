@@ -1,15 +1,15 @@
 # <img src="https://raw.githubusercontent.com/FortAwesome/Font-Awesome/6.x/svgs/solid/ship.svg" width="50" height="50"> BattleShips Game | Vue3 | Vuex | OptionsAPI
 
 
+It is expired project now. If You want to see new project, [check here](https://github.com/sharkson-mgn/battleships-vue3-capi-pinia).
+
+
 (Video preview from 23.08.2022)
 
 [![Video Preview](https://img.youtube.com/vi/8nA4GZM-BUo/0.jpg)](https://www.youtube.com/watch?v=8nA4GZM-BUo)
 
 
 [DEMO AVAILABLE](https://demo.sharkson.eu/battleshipsgame/)
-
-[DEMO OF NEW VERSION](https://demo.sharkson.eu/battleshipsgame2/)
-(in progress, using pinia and composition api)
 
 Attention! This project is still being developed.
 
